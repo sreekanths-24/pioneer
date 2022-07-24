@@ -1,0 +1,802 @@
+
+
+//cpu scheduling
+
+  //1 fcfs
+    #include<stdio.h>
+    void main()
+    {
+        //define the variables
+        int i=0,j=0,a[20],b[20],p[20],n=0,g[20],t[20],w[20];
+        float avgw=0,avgt=0;
+
+        //enter the process number of ids and store it in n
+        printf("Enter the number of process: ");
+        scanf("%d",&n);
+
+        //enter each process ids,burst time and arrival time and store it in p[],b[],a[]
+        for(i=0;i<n;i++)
+        {
+            printf("process id : ");
+            scanf("%d",&p[i]);
+
+            printf("burst time : ");
+            scanf("%d",&b[i]);
+
+            printf("arrival time : ");
+            scanf("%d",&a[i]);
+        }
+
+        //sort the 3 arrays wrt arrival time
+        int temp;
+        for(i=0;i<n-1;i++)
+        {
+            for(j=0;j<n-1;j++)
+            {
+                if(a[j]>a[j+1])
+                {
+                    temp = a[j];
+                    a[j] = a[j+1];
+                    a[j+1] = temp;
+
+                    temp = b[j];
+                    b[j] = b[j+1];
+                    b[j+1] = temp;
+
+                    temp = p[j];
+                    p[j] = p[j+1];
+                    p[j+1] = temp;
+                }
+            }
+        }
+
+        //draw gnatt chart
+        g[0] = 0;
+        for(i=0;i<n;i++)
+        {
+            g[i+1] = g[i]+b[i];
+        }
+
+        //calculate tat, wt, avg tat, avg wt
+        for(i=0;i<n;i++)
+        {
+            t[i] = g[i+1]-a[i];
+            w[i] = t[i] - b[i];
+            avgw += w[i];
+            avgt += t[i];
+        }
+        avgw = avgw/n;
+        avgt = avgt/n;
+
+        //print the output
+        printf("pid\tarrival time\tburst time\twaiting time\tturn around time\n");
+        for(i=0;i<n;i++)
+        {
+            printf("%d\t%d\t\t%d\t\t%d\t\t\t%d\n",p[i],a[i],b[i],w[i],t[i]);
+        }
+        printf("\navg wt = %f",avgw);
+        printf("\navg tat = %f",avgt);
+    }
+
+  //2 sjf
+    #include <stdio.h>
+    void main()
+    {
+        // enter the required variables
+        int i=0,j=0,a[20],b[20],p[20],n,g[20],w[20],t[20];
+        float avgw=0,avgt=0;
+        int k=1,min = 0,btime =0;
+
+        // enter the number of process to n
+        printf("enter the number of process : ");
+        scanf("%d",&n);
+
+        // enter the pid, at, bt and store it in p[],a[], b[];
+        for(i =0; i<n; i++)
+        {
+            printf("process id = ");
+            scanf("%d",&p[i]);
+
+            printf("arrival time = ");
+            scanf("%d",&a[i]);
+
+            printf("burst time = ");
+            scanf("%d",&b[i]);
+        }
+
+        //sort the jobs according to burst time
+        int temp=0;
+        for(i=0;i<n-1;i++)
+        {
+            for(j=0;j<n-1;j++)
+            {
+                if(b[j]>b[j+1])
+                {
+                    temp = a[j];
+                    a[j] = a[j+1];
+                    a[j+1] = temp;
+
+                    temp = b[j];
+                    b[j] = b[j+1];
+                    b[j+1] = temp;
+
+                    temp = p[j];
+                    p[j] = p[j+1];
+                    p[j+1] = temp;
+                }
+            }
+        }
+        for(i=0;i<n;i++)
+        {
+            btime=btime+b[i];
+            min=b[k];
+            for(j=k;j<n;j++)
+            {
+                if(btime >= a[j] && b[j]<min)
+                {
+                    temp = a[j];
+                    a[j] = a[j-1];
+                    a[j-1] = temp;
+
+                    temp = b[j];
+                    b[j] = b[j-1];
+                    b[j-1] = temp;
+
+                    temp = p[j];
+                    p[j] = p[j-1];
+                    p[j-1] = temp;
+                }
+            }
+            k++;
+        }
+
+        //draw gnatt chart
+        g[0] = 0;
+        for(i=0;i<n;i++)
+        {
+            g[i+1] = g[i]+b[i];
+        }
+
+        //calculate tat, wt, avg tat, avg wt
+        for(i=0;i<n;i++)
+        {
+            t[i] = g[i+1]-a[i];
+            w[i] = t[i] - b[i];
+            avgw += w[i];
+            avgt += t[i];
+        }
+        avgw = avgw/n;
+        avgt = avgt/n;
+
+        //print the output
+        printf("pid\tburst time\tgnatt chart\twaiting time\t\tturn around time\n");
+        for(i=0;i<n;i++)
+        {
+            printf("%d\t%d\t\t%d-%d\t\t%d\t\t\t%d\n",p[i],b[i]+1,g[i]+1,g[i+1]+1,w[i]+1,t[i]+1);
+        }
+        printf("\navg wt = %f",avgw+1);
+        printf("\navg tat = %f",avgt+1);
+    }
+
+//3 priority
+    #include<stdio.h>
+
+    int main()
+    {
+        int bt[20],p[20],wt[20],tat[20],pr[20],i,j,n,total=0,pos=0,temp=0,avg_wt,avg_tat;
+        printf("Enter Total Number of Process:");
+        scanf("%d",&n);
+
+        printf("\nEnter Burst Time and Priority\n");
+        for(i=0;i<n;i++)
+        {
+            printf("\nP[%d]\n",i+1);
+            printf("Burst Time:");
+            scanf("%d",&bt[i]);
+            printf("Priority:");
+            scanf("%d",&pr[i]);
+            p[i]=i+1;           //contains process number
+        }
+
+        //sorting burst time, priority and process number in ascending order using selection sort
+        for(i=0;i<n;i++)
+        {
+            pos=i;
+            for(j=i+1;j<n;j++)
+            {
+                if(pr[j]<pr[pos])
+                    pos=j;
+            }
+
+            temp=pr[i];
+            pr[i]=pr[pos];
+            pr[pos]=temp;
+
+            temp=bt[i];
+            bt[i]=bt[pos];
+            bt[pos]=temp;
+
+            temp=p[i];
+            p[i]=p[pos];
+            p[pos]=temp;
+        }
+
+        wt[0]=0; //waiting time for first process is zero
+
+        //calculate waiting time
+        for(i=1;i<n;i++)
+        {
+            wt[i]=0;
+            for(j=0;j<i;j++)
+                wt[i]+=bt[j];
+
+            total+=wt[i];
+        }
+
+        avg_wt=total/n;      //average waiting time
+        total=0;
+
+        printf("\nProcess\t    Burst Time    \tWaiting Time\tTurnaround Time");
+        for(i=0;i<n;i++)
+        {
+            tat[i]=bt[i]+wt[i];     //calculate turnaround time
+            total+=tat[i];
+            printf("\nP[%d]\t\t  %d\t\t    %d\t\t\t%d",p[i],bt[i],wt[i],tat[i]);
+        }
+
+        avg_tat=total/n;     //average turnaround time
+        printf("\n\nAverage Waiting Time=%d",avg_wt);
+        printf("\nAverage Turnaround Time=%d\n",avg_tat);
+
+    return 0;
+    }
+
+
+  //4 round robin
+    #include<stdio.h>
+    int main()
+    {
+      int i, limit, total = 0, x, counter = 0, time_quantum;
+      int wait_time = 0, turnaround_time = 0, arrival_time[10], burst_time[10], temp[10];
+      float average_wait_time, average_turnaround_time;
+      printf("\nEnter Total Number of Processes:\t");
+      scanf("%d", &limit);
+      x = limit;
+      for(i = 0; i < limit; i++)
+      {
+        printf("\nEnter Details of Process[%d]\n", i + 1);
+        printf("Arrival Time:\t");
+        scanf("%d", &arrival_time[i]);
+        printf("Burst Time:\t");
+        scanf("%d", &burst_time[i]);
+        temp[i] = burst_time[i];
+      }
+      printf("\nEnter Time Quantum:\t");
+      scanf("%d", &time_quantum);
+      printf("\nProcess ID\t\tBurst Time\t Turnaround Time\t Waiting Time\n");
+      for(total = 0, i = 0; x != 0;)
+      {
+        if(temp[i] <= time_quantum && temp[i] > 0)
+        {
+          total = total + temp[i];
+          temp[i] = 0;
+          counter = 1;
+        }
+        else if(temp[i] > 0)
+        {
+          temp[i] = temp[i] - time_quantum;
+          total = total + time_quantum;
+        }
+        if(temp[i] == 0 && counter == 1)
+        {
+          x--;
+          printf("\nProcess[%d]\t\t%d\t\t %d\t\t\t %d", i + 1, burst_time[i], total - arrival_time[i],
+          total - arrival_time[i] - burst_time[i]);
+          wait_time = wait_time + total - arrival_time[i] - burst_time[i];
+          turnaround_time = turnaround_time + total - arrival_time[i];
+          counter = 0;
+        }
+        if(i == limit - 1)
+        {
+          i = 0;
+        }
+        else if(arrival_time[i + 1] <= total)
+        {
+          i++;
+        }
+        else
+        {
+          i = 0;
+        }
+      }
+      average_wait_time = wait_time * 1.0 / limit;
+      average_turnaround_time = turnaround_time * 1.0 / limit;
+      printf("\n\nAverage Waiting Time:\t%f", average_wait_time);
+      printf("\nAvg Turnaround Time:\t%f\n", average_turnaround_time);
+      return 0;
+    }
+
+
+//dead lock banker's algorithm
+#include<stdio.h>
+struct pro{
+int all[10],max[10],need[10];
+int flag;
+};
+int i,j,pno,r,nr,id,k=0,safe=0,exec,count=0,wait=0,max_err=0;
+struct pro p[10];
+int aval[10],seq[10];
+void safeState()
+{
+while(count!=pno){
+safe = 0;
+for(i=0;i<pno;i++){
+if(p[i].flag){
+exec = r;
+for(j=0;j<r;j++)
+{
+if(p[i].need[j]>aval[j]){
+exec =0;
+}
+}
+if(exec == r){
+for(j=0;j<r;j++){
+aval[j]+=p[i].all[j];
+}
+p[i].flag = 0;
+seq[k++] = i;
+safe = 1;
+count++;
+}
+}
+}
+if(!safe)
+{
+printf("System is in Unsafe State\n");
+break;
+}
+}
+if(safe){
+printf("\n\nSystem is in safestate \n");
+printf("Safe State Sequence \n");
+for(i=0;i<k;i++)
+printf("P[%d] ",seq[i]);
+printf("\n\n");
+}
+}
+void reqRes(){
+printf("\nRequest for new Resourses");
+printf("\nProcess id ? ");
+scanf("%d",&id);
+printf("Enter new Request details ");
+for(i=0;i<r;i++){
+scanf("%d",&nr);
+if( nr <= p[id].need[i])
+{
+if( nr <= aval[i]){
+aval[i] -= nr;
+p[id].all[i] += nr;
+p[id].need[i] -= nr;
+}
+else
+wait = 1;
+}
+else
+max_err = 1;
+}
+if(!max_err && !wait)
+safeState();
+else if(max_err){
+printf("\nProcess has exceeded its maximum usage \n");
+}
+else{
+printf("\nProcess need to wait\n");
+}
+}
+void main()
+{
+printf("Enter no of process ");
+scanf("%d",&pno);
+printf("Enter no. of resourses ");
+scanf("%d",&r);
+printf("Enter Available Resourse of each type ");
+for(i=0;i<r;i++){
+scanf("%d",&aval[i]);
+
+}
+printf("\n\n---Resourse Details---");
+for(i=0;i<pno;i++){
+printf("\nResourses for process %d\n",i);
+printf("\nAllocation Matrix\n");
+for(j=0;j<r;j++){
+scanf("%d",&p[i].all[j]);
+}
+printf("Maximum Resourse Request \n");
+for(j=0;j<r;j++){
+scanf("%d",&p[i].max[j]);
+}
+p[i].flag = 1;
+}
+// Calcualting need
+for(i=0;i<pno;i++){
+for(j=0;j<r;j++){
+p[i].need[j] = p[i].max[j] - p[i].all[j];
+}
+}
+//Print Current Details
+printf("\nProcess Details\n");
+printf("Pid\t\tAllocattion\t\tMax\t\tNeed\n");
+for(i=0;i<pno;i++)
+{
+printf("%d\t\t",i);
+for(j=0;j<r;j++){
+printf("%d ",p[i].all[j]);
+}
+printf("\t\t");
+for(j=0;j<r;j++){
+printf("%d ",p[i].max[j]);
+}
+printf("\t\t");
+for(j=0;j<r;j++){
+printf("%d ",p[i].need[j]);
+}
+printf("\n");
+}
+//Determine Current State in Safe State
+safeState();
+int ch=1;
+do{
+printf("Request new resourse ?[0/1] :");
+scanf("%d",&ch);
+if(ch)
+reqRes();
+}while(ch!=0);
+//end:printf("\n");
+}
+
+
+//disk scheduling
+  //fcfs
+  #include<stdio.h>
+  void main(){
+   int ioq[20],i,n,ihead,tot;
+   float seek=0,avgs;
+
+   printf("Enter the number of requests\t:");
+   scanf("%d",&n);
+   printf("Enter the initial head position\t:");
+   scanf("%d",&ihead);
+   ioq[0] = ihead;
+   ioq[n+1] =0;
+   printf("Enter the I/O queue requests \n");
+   for(i=1;i<=n;i++){
+   scanf("%d",&ioq[i]);
+   }
+   ioq[n+1] =ioq[n];// to set the last seek zero
+   printf("\nOrder of request served\n");
+   for(i=0;i<=n;i++){
+
+   tot = ioq[i+1] - ioq[i];
+   if(tot < 0)
+   tot = tot * -1;
+   seek += tot;
+   // printf("%d\t%d\n",ioq[i],tot);// to display each seek
+   printf("%d --> ",ioq[i]);
+
+   }
+   avgs = seek/(n);
+   printf("\nTotal Seek time\t\t: %.2f",seek);
+   printf("\nAverage seek time\t: %.2f\n\n",avgs);
+  }
+
+  //scan
+  #include<stdio.h>
+  void main()
+  {
+   int ioq[20],i,n,j,ihead,temp,scan,tot;
+   float seek=0,avgs;
+
+   printf("Enter the number of requests\t:");
+   scanf("%d",&n);
+   printf("Enter the initial head position\t:");
+   scanf("%d",&ihead);
+   ioq[0] = ihead;
+   ioq[1] = 0;
+   n += 2;
+   printf("Enter the I/O queue requests \n");
+   for(i=2;i<n;i++){
+   scanf("%d",&ioq[i]);
+   }
+
+   for(i=0;i<n-1;i++){
+   for(j=0;j<n-1;j++)
+   {
+
+   if(ioq[j] > ioq[j+1]){
+
+   temp = ioq[j];
+   ioq[j] = ioq[j+1];
+   ioq[j+1] = temp;
+
+   }
+
+   }
+   }
+   ioq[n]=ioq[n-1];
+   for(i=0;i<n;i++){
+
+   if(ihead == ioq[i]){
+
+   scan = i;
+   break;
+
+   }
+
+   }
+
+   printf("\nOrder of request served\n\n");
+   tot = 0;
+   for(i=scan;i>=0;i--){
+   //rai tot = ioq[i+1] - ioq[i];
+   tot = ioq[i] – ioq[i-1]; // me
+   if(i==0) // me
+   tot=ioq[i]-ioq[scan+1];//me
+   if(tot < 0)
+   tot = tot * -1;
+   //seek += tot;
+   printf("%d\t%d\n",ioq[i],tot);
+   }
+
+
+   for(i=scan+1;i<n;i++){
+   tot = ioq[i+1] - ioq[i];
+   if(tot < 0)
+   tot = tot * -1;
+   //seek += tot;
+   printf("%d\t%d\n",ioq[i],tot);
+   }
+   seek = ihead + ioq[n-1];
+
+   avgs = seek/(n-2);
+   printf("\n\nTotal Seek time\t\t: %.2f",seek);
+   printf("\nAverage seek time\t: %.2f\n\n",avgs);
+
+  }
+
+  // c scan
+  #include<stdio.h>
+  void main()
+  {
+   int ioq[20],i,n,j,ihead,itail,temp,scan,tot=0;
+   float seek=0,avgs;
+
+   printf("Enter the number of requests\t: ");
+   scanf("%d",&n);
+   ioq[0] = 0;
+   printf("Enter the initial head position\t: ");
+   scanf("%d",&ihead);
+   ioq[1] = ihead;
+   printf("Enter the maximum track limit\t: ");
+   scanf("%d",&itail);
+   ioq[2] = itail;
+   n += 3;
+
+   printf("Enter the I/O queue requests \n");
+   for(i=3;i<n;i++){
+   scanf("%d",&ioq[i]);
+   }
+
+
+   for(i=0;i<n-1;i++){
+   for(j=0;j<n-1;j++)
+   {
+
+   if(ioq[j] > ioq[j+1]){
+
+   temp = ioq[j];
+   ioq[j] = ioq[j+1];
+   ioq[j+1] = temp;
+
+   }
+
+   }
+   }
+
+   for(i=0;i<n+1;i++){
+
+   if(ihead == ioq[i]){
+
+   scan = i;
+   break;
+
+   }
+
+   }
+
+   i = scan;
+   temp = n;
+
+   printf("\nOrder of request served\n");
+   printf("\n");
+
+   while(i != temp){
+
+   if(i < temp-1){
+   tot = ioq[i+1] - ioq[i];
+
+   if(tot < 0)
+   tot = tot * -1;
+   seek += tot;
+   }
+   printf("%d --> ",ioq[i]);
+   // printf("%d\t%d\n",ioq[i],tot);
+   i++;
+
+   if(i == n){
+   i = 0;
+   temp = scan;
+   seek += itail;
+   }
+
+   }
+
+   avgs = seek/(n-3);
+   printf("\n\nTotal Seek time\t\t: %.2f",seek);
+   printf("\nAverage seek time\t: %.2f\n\n",avgs);
+  }
+
+// inter process communication
+
+  //writer process
+
+  #include<stdio.h>
+  #include<stdlib.h>
+  #include<unistd.h>
+  #include<sys/shm.h>
+  #include<string.h>
+  int main()
+  {
+  int i;
+  void *shared_memory;
+  char buff[100];
+  int shmid;
+  shmid=shmget((key_t)2345, 1024, 0666|IPC_CREAT); 
+  printf("Key of shared memory is %d\n",shmid);
+  shared_memory=shmat(shmid,NULL,0); 
+  printf("Process attached at %p\n",shared_memory);
+  printf("Enter some data to write to shared memory\n");
+  read(0,buff,100); 
+  strcpy(shared_memory,buff); 
+  printf("You wrote : %s\n",(char *)shared_memory);
+  }
+
+  //reader process
+
+  #include<stdio.h>
+  #include<stdlib.h>
+  #include<unistd.h>
+  #include<sys/shm.h>
+  #include<string.h>
+  int main()
+  {int i;
+  void *shared_memory;
+  char buff[100];
+  int shmid;
+  shmid=shmget((key_t)2345, 1024, 0666);
+  printf("Key of shared memory is %d\n",shmid);
+  shared_memory=shmat(shmid,NULL,0);
+  printf("Process attached at %p\n",shared_memory);
+  printf("Data read from shared memory is : %s\n",(char *)shared_memory);
+  }
+
+//memory allocation
+  //worstfit
+    #include <stdio.h>
+
+void implimentWorstFit(int blockSize[], int blocks, int processSize[], int processes)
+{
+
+    int allocation[processes];
+    int occupied[blocks];
+    int i,j;
+    for( i = 0; i < processes; i++){
+        allocation[i] = -1;
+    }
+
+    for( i = 0; i < blocks; i++){
+        occupied[i] = 0;
+    }
+    for ( i=0; i < processes; i++)
+    {
+        int indexPlaced = -1;
+        for( j = 0; j < blocks; j++)
+        {
+            if(blockSize[j] >= processSize[i] && !occupied[j])
+            {
+                    if (indexPlaced == -1)
+                    indexPlaced = j;
+                    else if (blockSize[indexPlaced] < blockSize[j])
+                    indexPlaced = j;
+            }
+        }
+        if (indexPlaced != -1)
+        {
+            allocation[i] = indexPlaced;
+            occupied[indexPlaced] = 1;
+            blockSize[indexPlaced] -= processSize[i];
+        } }
+
+    printf("\nProcess No.\tProcess Size\tBlock no.\n");
+    for ( i = 0; i < processes; i++)
+    {
+        printf("%d \t\t\t %d \t\t\t", i+1, processSize[i]);
+        if (allocation[i] != -1)
+            printf("%d\n",allocation[i] + 1);
+        else
+            printf("Not Allocated\n");
+    }
+}
+int main()
+{
+    int blockSize[20];
+    int processSize[20];
+    int i,n,m;
+    printf("enter the number of blocks:");
+    scanf("%d",&n);
+        for(i=1;i<=n;i++)
+    {
+    printf("enter the %d block size:",i);
+    scanf("%d",&blockSize[i]);
+    }
+    printf("enter the no of process:");
+    scanf("%d",&m);
+        for(i=1;i<=m;i++)
+        {         printf("enter the %d size of process:",i);
+
+                scanf("%d",&processSize[i]);
+        }
+   implimentWorstFit(blockSize,n,processSize,m);
+    return 0;
+
+}
+
+//best fit
+#include<stdio.h>
+#include<process.h>
+void main()
+{
+int a[20],p[20],i,j,n,m;
+printf("Enter no of Blocks.\n");
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+                        printf("Enter the %dst Block size:",i);
+                        scanf("%d",&a[i]);
+}
+printf("Enter no of Process.\n");
+scanf("%d",&m);
+for(i=0;i<m;i++)
+{
+                        printf("Enter the size of %dst Process:",i);
+                        scanf("%d",&p[i]);
+}
+            for(i=0;i<n;i++)
+{
+for(j=0;j<m;j++)
+                        {
+                                    if(p[j]<=a[i])
+                                    {
+                                                printf("The Process %d allocated to %d\n",j,a[i]);
+                                                p[j]=10000;
+                                                break;
+                                    }
+                        }
+}
+for(j=0;j<m;j++)
+{
+if(p[j]!=10000)
+                        {
+printf("The Process %d is not allocated\n",j);
+                        }
+}
+}
