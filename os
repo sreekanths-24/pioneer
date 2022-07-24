@@ -800,3 +800,79 @@ printf("The Process %d is not allocated\n",j);
                         }
 }
 }
+
+// first fit
+#include <stdio.h>
+
+void implimentFirstFit(int blockSize[], int blocks, int processSize[], int processes)
+{
+  int allocate[processes];
+    int occupied[blocks];  \
+    int i,j;
+   for(i=0;i<processes;i++)
+        {
+                allocate[i] = -1;
+        }
+        for(i=0;i<blocks;i++){
+        occupied[i] = 0;
+    }
+       for( i=0;i<processes;i++)
+    {
+        for ( j = 0; j <blocks; j++)
+        {
+        if (!occupied[j] && blockSize[j] >= processSize[i])
+            {                allocate[i] = j;
+                occupied[j] = 1;
+                break;
+            }
+        }
+    }
+    printf("\nProcess No.\tProcess Size\tBlock no.\n");
+    for ( i = 0; i < processes; i++)
+    {
+        printf("%d \t\t\t %d \t\t\t", i+1, processSize[i]);
+        if (allocate[i] != -1)
+            printf("%d\n",allocate[i] + 1);
+        else
+            printf("Not Allocated\n");
+    }
+}
+void main()
+{
+    int blockSize[20];
+    int processSize[20];
+    int i,blocks,processes;
+    printf("enter the number of blocks:");
+    scanf("%d",&blocks);
+    for(i=1;i<=blocks;i++)
+    {printf("enter the %d sizes of blocks:",i);
+    scanf("%d",&blockSize[i]);}
+    printf("enter the no of process:");
+    scanf("%d",&processes);
+    for(i=1;i<=processes;i++)
+    {printf("enter the %d  size of process:",i);
+     scanf("%d",&processSize[i]);}
+    implimentFirstFit(blockSize, blocks, processSize, processes);
+}
+
+//process in linux
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdio.h>
+int main( ){
+   pid_t child_pid;
+   child_pid = fork (); // Create a new child process;
+   if (child_pid < 0) {
+      printf("fork failed");
+      return 1;
+   } else if (child_pid == 0) {
+      printf ("child process successfully created!\n");
+      printf ("child_PID = %d,parent_PID = %d\n", getpid(), getppid( ) );
+   }
+ else {
+      wait(NULL);
+      printf ("parent process successfully created!\n");
+      printf ("child_PID = %d, parent_PID = %d", getpid( ), getppid( ) );
+   }
+   return 0;
+}
