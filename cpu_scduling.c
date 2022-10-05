@@ -179,7 +179,6 @@ void main()
 		scanf("%d",&a[i]);
 	}
 	
-//sort the jobs based on burst time.
 	int temp=0;
 	for(i=0;i<n-1;i++)
 	{

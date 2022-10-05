@@ -22,8 +22,7 @@
 int main()
 {
     int numOfProcess, numOfResourses, i,j,k,y, alloc[20][20], max[20][20], available[50], ind=0;
-    int finish[numOfProcess], safeSequence[numOfProcess], work[numOfResourses], need[numOfProcess][numOfResourses]; 
-
+   
     printf("Enter the number of process: "); 
     scanf("%d",&numOfProcess);
 
@@ -53,6 +52,7 @@ int main()
     {
         scanf("%d", &available[i]);
     }
+    int finish[numOfProcess], safeSequence[numOfProcess], work[numOfResourses], need[numOfProcess][numOfResourses]; 
 
     for(i=0; i<numOfProcess; i++)
     {

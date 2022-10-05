@@ -33,6 +33,9 @@
     1. Shell script program to count number of files in a Directory
     1. Shell program to reverse a number
 
-"zos" file contains all the programs in one place.
-<br>
-The learning folder contains programs with algorithm.
+# Note
+1. "zos" file contains all the programs in one place.
+
+1. The learning folder contains programs with algorithm.
+
+1. In some programs you might see 2 programs for the same topic, in that case the first program is the most relevent.
