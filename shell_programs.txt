@@ -1,0 +1,179 @@
+#basic arithematic operations
+echo "Enter two numbers"
+read a b
+sum = $(expr $a + $b)
+diff = $(expr $a - $b)
+mul = $(expr $a \* $b)
+div = $(expr $a / $b)
+mod = $(expr $a % $b)
+echo "sum is $sum"
+echo "differencs is $diff"
+echo "product is $mul"
+echo "division is $div"
+echo "modulus is $mod"
+
+#---------------------------------------------------------------------------------------------------------------
+
+#factorial of a number
+echo "Enter the no"
+read fact
+
+ans=1
+counter=0
+while [ $fact -ne $counter ]
+do
+        counter=`expr $counter + 1`
+        ans=`expr $ans \* $counter`
+done
+echo " Factorial is $ans"
+
+#---------------------------------------------------------------------------------------------------------------
+
+#Write a shell script to find the largest among the 3 given numbers
+echo Enter 3  numbers with spaces "in" between
+read a b c
+l=$a
+if [ $b -gt $l ]
+then
+l=$b
+fi
+if [ $c -gt $l ]
+then
+l=$c
+fi
+echo Lagest of $a $b $c is $l
+
+#-----------------------------------------------------------------------------------------------------------
+
+#Write a shell script program to develop a calculator. 
+clear
+sum=0
+i="y"
+
+echo " Enter one no."
+read n1
+echo "Enter second no."
+read n2
+while [ $i = "y" ]
+do
+echo "1.Addition"
+echo "2.Subtraction"
+echo "3.Multiplication"
+echo "4.Division"
+echo "Enter your choice"
+read ch
+case $ch in
+    1)sum=`expr $n1 + $n2`
+     echo "Sum ="$sum"
+        2)sum=`expr $n1 - $n2`
+     echo "Sub = "$sum"
+    3)sum=`expr $n1 \* $n2`
+     echo "Mul = "$sum"
+    4)sum=`expr $n1 / $n2`
+     echo "Div = "$sum"
+    *)echo "Invalid choice"
+esac
+echo "Do u want to continue ?"
+read i
+if [ $i != "y" ]
+then
+    exit
+fi
+done    
+
+#------------------------------------------------------------------------------------------------------------
+
+#Write a shell script to find how many terminals has this user logged in
+
+if [ $# -eq 1 ]
+    then
+            who>user.lst
+            echo "$1 User is logeed at "
+            grep -c $1 user.lst
+    else
+            echo "Pls enter User Name"
+    fi
+
+#-------------------------------------------------------------------------------------------------------------
+
+#Write a shell script to reverse the contents of a file 
+
+if [ $# -eq 1 ]
+    then
+        if [ -f $1 ]
+            then
+            a=`rev $1`
+            echo "Reverse of $1"
+                cat $1
+            echo " is-> $a"else
+            echo "File does not exist "
+            fi      
+    
+    else
+        echo "Please enter file name or path"
+    fi
+
+#-------------------------------------------------------------------------------------------------------------
+
+#Write a shell Script program to check whether the given number is even or odd.
+
+echo -n "Enter numnber : "
+read n
+rem=$(( $n % 2 ))
+if [ $rem -eq 0 ]
+then
+  echo "$n is even number"
+else
+  echo "$n is odd number"
+fi
+
+#-------------------------------------------------------------------------------------------------------------
+
+#Shell script program to check whether given file is a directory or not
+
+echo -n "Please enter Directory name you wish to search: "
+read dir
+
+for filename in "/home/me/Desktop/$dir"/*
+
+do
+
+    if (-F $filename)
+    then 
+    echo $filename
+
+    fi
+done
+
+#-------------------------------------------------------------------------------------------------------------
+
+#Shell script program to count number of files in a Directory
+
+if [ -d "$@" ]
+then
+find "$@" -type f | ls -l "$@" | wc -l | echo "Number of files is $@"
+find "$@" -type d | ls -l "$@" | wc -l | echo "Number of directories is $@"
+fi
+
+#-------------------------------------------------------------------------------------------------------------
+
+#Shell program to reverse a number
+
+if [ $# -eq 1 ]
+        then
+             if [ $1 -gt 0 ]
+             then
+                 num=$1
+                 sumi=0
+                 while [ $num -ne 0 ]
+                 do
+                 lnum=`expr $num %  10`
+                 sumi=`expr $sumi * 10 + $lnum`
+                 num=`expr $num \/ 10`
+                 done
+                 echo "Reverse of digits is  $sumi of $1"else
+                 echo " Number is less than 0"
+               fi
+    else
+            echo "Insert only one parameter "
+    fi     

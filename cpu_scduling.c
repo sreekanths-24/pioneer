@@ -1,5 +1,6 @@
-//------------------------------------------------------------------------------------------------------------------
-//fcfs scheduling
+//------------------------------------------------------------------------------------------------------------
+
+//fcfs scheduling 
 
 #include<stdio.h>
 
@@ -154,8 +155,106 @@ void main()
 }
 
 
-//------------------------------------------------------------------------------------------------------------------
-//sjf scheduling
+//-----------------------------------------------------------------------------------------------------------------
+
+//sjf
+
+#include<stdio.h>
+void main()
+{
+	int i=0,j=0,p[i],b[i],g[20],w[20],t[20],a[20],n=0,m;
+	int k=1,min=0,btime=0;
+	float avgw=0,avgt=0;
+	printf("Enter the number of process : ");
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		printf("\nProcess id : ");
+		scanf("%d",&p[i]);
+
+		printf("Burst Time : ");
+		scanf("%d",&b[i]);
+
+		printf("Arrival Time: ");
+		scanf("%d",&a[i]);
+	}
+	
+//sort the jobs based on burst time.
+	int temp=0;
+	for(i=0;i<n-1;i++)
+	{
+		for(j=0;j<n-1;j++)
+		{
+			if(a[j]>a[j+1])
+			{
+				temp=a[j];
+				a[j]=a[j+1];
+				a[j+1]=temp;
+
+				temp=b[j];
+				b[j]=b[j+1];
+				b[j+1]=temp;
+
+				temp=p[j];
+				p[j]=p[j+1];
+				p[j+1]=temp;
+			}
+		}
+	}
+	
+	for(i=0;i<n;i++)
+	{
+		btime=btime+b[i];
+		min=b[k];
+		for(j=k;j<n;j++)
+		{
+			if(btime >= a[j] && b[j]<min)
+			{
+				temp=a[j];
+				a[j]=a[j-1];
+				a[j-1]=temp;
+
+				temp=b[j];
+				b[j]=b[j-1];
+				b[j-1]=temp;
+
+				temp=p[j];
+				p[j]=p[j-1];
+				p[j-1]=temp;
+			}
+		}
+		k++;
+	}
+	g[0]=a[0];
+	for(i=0;i<n;i++)
+	{
+		g[i+1]=g[i]+b[i];
+		if(g[i]<a[i])
+			g[i]=a[i];
+	}
+	for(i=0;i<n;i++)
+	{
+		
+		
+		t[i]=g[i+1]-a[i];
+		w[i]=t[i]-b[i];
+		avgw+=w[i];
+		avgt+=t[i];
+	}
+	avgw=avgw/n;
+	avgt=avgt/n;
+	printf("pid\tBrustTime\tGantChart\tWaiting time\t\tTurnarround Time\n");
+	for(i=0;i<n;i++)
+	{
+		printf(" %d\t %d\t\t%d-%d\t\t%d\t\t\t%d\n",p[i],b[i],g[i],g[i+1],w[i],t[i]);
+	}
+	printf("\nAverage waiting time %f",avgw);
+	printf("\nAverage turnarround time %f\n",avgt);
+	
+}
+
+
+//another code for sjf scheduling
 
 #include <stdio.h>
 
@@ -259,7 +358,76 @@ int main()
 
 
 //------------------------------------------------------------------------------------------------------------------
-// priority sceduling
+
+//priority scheduling
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int main()
+{
+    
+    int i,j,n, bt[10], p[10], compt[10], wt[10], tat[10], temp1, temp2;
+    float sumwt=0, sumtat=0;
+
+    
+    printf("Enter the number of processes: ");
+    scanf("%d", &n);
+
+    printf("Enter the burst time of each process\n");
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d",&bt[i]);
+    }
+
+    printf("Enter the priority of each process\n");
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d",&p[i]);
+    }
+
+    for (i = 0; i < n; i++)
+    {
+        for (j = i+1; j < n; j++)
+        {
+            if (p[i]>p[j])
+            {
+                temp1=bt[i];
+                bt[i]=bt[j];
+                bt[j]=temp1;
+
+                temp2=p[i];
+                p[i]=p[j];
+                p[j]=temp2;  
+            }
+            
+        }
+        
+    }
+
+    wt[0]=0;
+    compt[0]=bt[0];
+
+    for (i = 1; i < n; i++)
+    {
+        compt[i]=bt[i]+compt[i-1];
+    }
+    for (i = 0; i < n; i++)
+    {
+        tat[i]=compt[i];
+        wt[i]=tat[i]-bt[i];
+        sumtat += tat[i];
+        sumwt += wt[i];
+    }
+
+    printf("Total Waiting time: %f\n",sumwt);
+    printf("Average Waiting time: %f\n",sumwt/n);
+    printf("Total Turn Around time: %f\n",sumtat);
+    printf("Average Turn Around: %f\n",sumtat/n);
+    
+}
+
+//another code for priority sceduling
 
 #include<stdio.h>
  
@@ -396,6 +564,90 @@ struct priority_scheduling temp_process;
 
 //-----------------------------------------------------------------------------------------------------------------
 // round robin
+//step 1: start the program
+#include<stdio.h>
+
+int main()
+{
+ 
+    int i,j,n,time,remain,flag=0,ts;
+    int sum_wait=0, sum_tat=0,at[10],bt[10],rt[10];
+
+ 
+    printf("Enter the number of process: ");
+    scanf("%d",&n);
+
+    remain=n;
+
+    for (i = 0; i < n; i++)
+    {
+        
+        printf("Enter the arrival time of process P%d: ", i+1);
+        scanf("%d",&at[i]);
+        
+    }
+    for (i = 0; i < n; i++)
+    {
+        printf("Enter the burst time of process P%d: ", i+1);
+        scanf("%d",&bt[i]);
+    }
+    
+    
+    for (i = 0; i < n; i++)
+    {
+        rt[i]=bt[i];
+    }
+    
+ 
+    printf("Enter the time slice: ");
+    scanf("%d",&ts);
+
+    for (time=0,i=0;remain!=0;)
+    {
+        if (rt[i]<=ts && rt[i]>0)
+        {
+            time +=rt[i];
+            rt[i]=0;
+            flag=1;
+        }
+        else if (rt[i]>0)
+        {
+            rt[i] -= ts;
+            time += ts;
+        }
+        if (rt[i]==0 && flag ==1)
+        {
+            remain--;
+            sum_wait += time-at[i]-bt[i];
+            sum_tat += time-at[i];
+            flag=0;
+        }
+        if (i==n-1)
+        {
+            i=0;
+
+        }
+        else if (at[i+1]<= time)
+        {
+            i++;
+        }
+        else
+        {
+            i=0;
+        }    
+    }
+    
+
+ 
+    printf("\nTotal Waiting time = %d\n",sum_wait);
+    printf("\nAverage Waiting time = %d\n",sum_wait/n);
+    printf("\nTotal Turnaround time = %d\n",sum_tat);
+    printf("\nAverage Turnaround time = %d\n",sum_tat/n);
+    return 0;
+
+}
+
+//another code for round robin
 
 #include<stdio.h>
     int main()

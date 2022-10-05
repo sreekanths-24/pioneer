@@ -1,6 +1,40 @@
 //disk scheduling
 //fcfs
 
+#include<stdio.h>
+#include<stdlib.h>
+
+void main()
+{
+    
+    int request[100],i,n,TotalHeadMovement=0,initial;
+
+    
+    printf("Enter the number of Requests: ");
+    scanf("%d",&n);
+
+    printf("Enter the request sequence: ");
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d",&request[i]);
+    }
+    
+    printf("Enter the initial head sequence: ");
+    scanf("%d",&initial);
+
+    
+    for (i = 0; i < n; i++)
+    {
+        TotalHeadMovement = TotalHeadMovement + abs(request[i]-initial);
+        initial=request[i];
+    }
+    
+    
+    printf("Total Head Movement = %d",TotalHeadMovement);
+}
+
+//another code for fcfs
+
   #include<stdio.h>
   void main(){
    int ioq[20],i,n,ihead,tot;
@@ -16,7 +50,7 @@
    for(i=1;i<=n;i++){
    scanf("%d",&ioq[i]);
    }
-   ioq[n+1] =ioq[n];// to set the last seek zero
+   ioq[n+1] =ioq[n];
    printf("\nOrder of request served\n");
    for(i=0;i<=n;i++){
 
@@ -103,8 +137,7 @@
 
    avgs = seek/(n-2);
    printf("\n\nTotal Seek time\t\t: %.2f",seek);
-   printf("\nAverage seek time\t: %.2f\n\n",avgs);
-
+   
   }
 
 //=================================================================================================================

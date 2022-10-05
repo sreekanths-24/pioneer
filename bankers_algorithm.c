@@ -1,5 +1,132 @@
 //dead lock banker's algorithm
 
+// banker's algorithm for deadlock prevention
+
+//step 1: start the program
+//step 2: declare the required variables
+//step 3: input the necessary inputs
+        //3.1: number of process
+        //3.2: numberof resourses
+        //3.3: allocation matrix
+        //3.4: max matrix
+        //3.5 available matrix
+// step 4: calculate the need matrix    
+// step 5: print the need matrix
+//step 6: implement the safety algorithm to find the safe sequence
+        //6.1: set work = available
+        //6.2: set finish[i] = false or 0
+        //6.3: find an i such that both finish[i]= 0 and need <= work
+//step 7: print the safe sequence
+             
+#include<stdio.h>
+int main()
+{
+    int numOfProcess, numOfResourses, i,j,k,y, alloc[20][20], max[20][20], available[50], ind=0;
+    int finish[numOfProcess], safeSequence[numOfProcess], work[numOfResourses], need[numOfProcess][numOfResourses]; 
+
+    printf("Enter the number of process: "); 
+    scanf("%d",&numOfProcess);
+
+    printf("Enter the number of resourses: ");
+    scanf("%d",&numOfResourses);
+
+    printf("Enter the Allocation matrix: \n");
+    for(i=0; i<numOfProcess; i++)
+    {
+        for(j=0; j<numOfResourses; j++)
+        {
+            scanf("%d", &alloc[i][j]);
+        }
+    }
+
+    printf("Enter the max matrix: \n");
+    for(i=0; i<numOfProcess; i++)
+    {
+        for(j=0; j<numOfResourses; j++)
+        {
+            scanf("%d", &max[i][j]);
+        }
+    }
+
+    printf("Enter the available matrix: \n");
+    for(i=0; i<numOfResourses; i++)
+    {
+        scanf("%d", &available[i]);
+    }
+
+    for(i=0; i<numOfProcess; i++)
+    {
+        for(j=0; j<numOfResourses; j++)
+        {
+            need[i][j] = max[i][j] - alloc[i][j];
+        }
+    }
+
+    printf("The need matrix is: \n");
+    for(i=0; i<numOfProcess; i++)
+    {
+        printf("\n");
+        for(j=0; j<numOfResourses; j++)
+        {
+            printf("%d",need[i][j]);
+        }
+    }
+
+        for(i=0; i<numOfResourses; i++)
+        {
+            work[i] = available[i];
+        }
+
+        for(i=0; i<numOfProcess; i++)
+        {
+            finish[i] = 0;
+        }
+
+        for (k = 0; k < numOfProcess; k++)
+        {
+            for (i = 0; i < numOfProcess; i++)
+            {
+                if (finish[i]==0)
+                {
+                    int flag= 0;
+                    for (j = 0; j < numOfResourses; j++)
+                    {
+                        if (need[i][j]> work[j])
+                        {
+                            flag = 1;
+                            break;
+                        }
+                        
+                    }
+                    if (flag == 0)
+                    {
+                        safeSequence[ind++] = i;
+                        for (y = 0; y < numOfResourses; y++)
+                        {
+                            work[y] += alloc[i][y];
+                        }
+                        finish[i] = 1;
+                        
+                    }
+                    
+                    
+                }
+                
+            }
+            
+        }
+    
+    printf("\nFollowing is the safe sequence\n");
+    for (i = 0; i < numOfProcess-1; i++)
+    {
+        printf("P%d", safeSequence[i]);
+    }
+    
+
+}
+
+//---------------------------------------------------------------------------------------------------------------
+
         #include<stdio.h>
         struct pro{
         int all[10],max[10],need[10];

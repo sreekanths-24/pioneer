@@ -67,7 +67,7 @@
         }             
         printf("\n");       
     }       
-    printf("Page Hit:\t%d\n", hit);       
+    printf("Page faults:\t%d\n", hit);       
     return 0; 
   }  
 
@@ -145,7 +145,7 @@
         for(j = 0; j < no_of_frames; ++j)
         {      
           printf("%d\t", frames[j]);      
-        } 
+      } 
       } 
       printf("\n\nTotal Page Faults = %d", faults);          
       return 0; 
@@ -159,12 +159,12 @@
   {         
     int n,f,fr[20],p[50],rep=0, found,fi=0;         
     int i,k;         
-    printf("Enter the number of pages ");         
+    printf("Enter the number of pages: ");         
     scanf("%d",&n);          
-    printf("Enter the reffrence string : ");         
+    printf("Enter the reffrence string: ");         
     for(i=0;i<n;i++)                 
     scanf("%d",&p[i]);          
-    printf("Enter the frame number  :");         
+    printf("Enter the number of frames: ");         
     scanf("%d",&f);          
     for(i=0;i<f;i++)                 
     fr[i] = -1;          
