@@ -1,4 +1,4 @@
-# Operating Systems Contents
+# S4 OS and S5 SS CONTENTS
 1. __Pass 1__
 1. __Pass 2__
 1. __Banker's Algorithm__
