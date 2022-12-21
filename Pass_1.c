@@ -72,3 +72,47 @@ while(fscanf(f1,"%s%s%s",lab,opcode,opa)!=EOF)
 	}
 }
 }
+≈===================
+INPUT FILES
+
+input.txt
+** START 2000
+** LDA FIVE
+** STA ALPHA
+** LDCH CHARZ
+** STCH C1
+ALPHA RESW 1
+FIVE WORD 5
+CHARZ BYTE C'Z'
+C1 RESB 1
+** END **
+
+opcode.txt
+START *
+LDA 03
+STA 0F
+LDCH 53
+STCH 57
+END 
+
+OUTPUT FILES
+
+out1.txt
+
+** START 2000
+ 2000 ** LDA FIVE
+ 2003 ** STA ALPHA
+ 2006 ** LDCH CHARZ
+ 2009 ** STCH C1
+ 2012 ALPHA RESW 1
+ 2015 FIVE WORD 5
+ 2018 CHARZ BYTE C'Z'
+ 2019 C1 RESB 1
+ 2020 ** END **
+
+sym1.txt
+
+ 2012 ALPHA
+ 2015 FIVE
+ 2018 CHARZ
+ 2019 C1
