@@ -1,4 +1,6 @@
 # Operating Systems Contents
+1. __Pass 1__
+1. __Pass 2__
 1. __Banker's Algorithm__
 1. __Cpu Scheduling__
     1. FCFS
