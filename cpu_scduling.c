@@ -159,97 +159,99 @@ void main()
 
 //sjf
 
-#include<stdio.h>
+#include <stdio.h>
+
 void main()
 {
-	int i=0,j=0,p[i],b[i],g[20],w[20],t[20],a[20],n=0,m;
-	int k=1,min=0,btime=0;
-	float avgw=0,avgt=0;
-	printf("Enter the number of process : ");
-	scanf("%d",&n);
-	for(i=0;i<n;i++)
-	{
-		printf("\nProcess id : ");
-		scanf("%d",&p[i]);
+    int i, j, n, p[10], b[10], a[10], temp, tat[10], wt[10], ft[10], st[10], gt[10];
+    float avgtat=0, avgwt=0;
+    printf("\n\n\t--- CPU SCHEDULING SJF ---");
+    printf("\n\nEnter the number of process: ");
+    scanf("%d", &n);
 
-		printf("Burst Time : ");
-		scanf("%d",&b[i]);
+    printf("\nEnter the details\n");
+    for(i=0;i<n;i++)
+    {
+        printf("-> Process %d\n", i);
+        p[i]=i;
+        printf("Burst Time: ");
+        scanf("%d", &b[i]);
+        printf("Arrival Time: ");
+        scanf("%d", &a[i]);
+        printf("\n");
+    }
 
-		printf("Arrival Time: ");
-		scanf("%d",&a[i]);
-	}
-	
-	int temp=0;
-	for(i=0;i<n-1;i++)
-	{
-		for(j=0;j<n-1;j++)
-		{
-			if(a[j]>a[j+1])
-			{
-				temp=a[j];
-				a[j]=a[j+1];
-				a[j+1]=temp;
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n-1;j++)
+        {
+            if(a[j] > a[j+1])
+            {
+                temp=a[j];
+                a[j]=a[j+1];
+                a[j+1]=temp;
 
-				temp=b[j];
-				b[j]=b[j+1];
-				b[j+1]=temp;
+                temp=b[j];
+                b[j]=b[j+1];
+                b[j+1]=temp;
 
-				temp=p[j];
-				p[j]=p[j+1];
-				p[j+1]=temp;
-			}
-		}
-	}
-	
-	for(i=0;i<n;i++)
-	{
-		btime=btime+b[i];
-		min=b[k];
-		for(j=k;j<n;j++)
-		{
-			if(btime >= a[j] && b[j]<min)
-			{
-				temp=a[j];
-				a[j]=a[j-1];
-				a[j-1]=temp;
+                temp=p[j];
+                p[j]=p[j+1];
+                p[j+1]=temp;
+            }
+            else if(a[j] == a[j+1])
+            {
+                if(b[j] > b[j+1])
+                {
+                    temp=a[j];
+                    a[j]=a[j+1];
+                    a[j+1]=temp;
 
-				temp=b[j];
-				b[j]=b[j-1];
-				b[j-1]=temp;
+                    temp=b[j];
+                    b[j]=b[j+1];
+                    b[j+1]=temp;
 
-				temp=p[j];
-				p[j]=p[j-1];
-				p[j-1]=temp;
-			}
-		}
-		k++;
-	}
-	g[0]=a[0];
-	for(i=0;i<n;i++)
-	{
-		g[i+1]=g[i]+b[i];
-		if(g[i]<a[i])
-			g[i]=a[i];
-	}
-	for(i=0;i<n;i++)
-	{
-		
-		
-		t[i]=g[i+1]-a[i];
-		w[i]=t[i]-b[i];
-		avgw+=w[i];
-		avgt+=t[i];
-	}
-	avgw=avgw/n;
-	avgt=avgt/n;
-	printf("pid\tBrustTime\tGantChart\tWaiting time\t\tTurnarround Time\n");
-	for(i=0;i<n;i++)
-	{
-		printf(" %d\t %d\t\t%d-%d\t\t%d\t\t\t%d\n",p[i],b[i],g[i],g[i+1],w[i],t[i]);
-	}
-	printf("\nAverage waiting time %f",avgw);
-	printf("\nAverage turnarround time %f\n",avgt);
-	
+                    temp=p[j];
+                    p[j]=p[j+1];
+                    p[j+1]=temp;
+                }
+            }
+        }
+    }
+
+    for(i=0;i<n;i++)
+    {
+        st[i]=a[i];
+        if(i > 0)
+        {
+            if(a[i] > ft[i-1])
+                st[i]=a[i];
+            else if(a[i] < ft[i-1])
+                st[i]=ft[i-1];
+            else
+                st[i]=a[i];
+        }
+
+        ft[i]=st[i]+b[i];
+        gt[i]=ft[i]-st[i];
+
+        tat[i]=ft[i]-a[i];
+        wt[i]=tat[i]-b[i];
+
+        avgtat=avgtat+tat[i];
+        avgwt=avgwt+wt[i];
+    }
+
+    avgtat=avgtat/n;
+    avgwt=avgwt/n;
+
+    printf("\n\n\tProcess id|\tArrival Time|\tBurst Time|\tWaiting Time|\tTurnaround Time|\tGarnt chart|\n");
+    for(i=0;i<n;i++)
+    {
+        printf("\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t\t%d - %d\n", p[i], a[i], b[i], wt[i], tat[i], st[i], ft[i]);
+    }
+    printf("\n\nAverage Turnaround Time: %f", avgtat);
+    printf("\n\nAverage Waiting Time: %f\n\n", avgwt);
 }
 
 
