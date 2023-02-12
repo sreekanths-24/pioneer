@@ -1,6 +1,9 @@
 # S4 OS and S5 SS CONTENTS
+1. __Absolute Loader__
 1. __Pass 1__
 1. __Pass 2__
+1. __Relocation Loader__
+1. __Single Pass Assembler__
 1. __Banker's Algorithm__
 1. __Cpu Scheduling__
     1. FCFS
