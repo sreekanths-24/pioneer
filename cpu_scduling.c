@@ -157,14 +157,14 @@ void main()
 
 //-----------------------------------------------------------------------------------------------------------------
 
-//sjf
-
+//sjf premptive
 #include <stdio.h>
 
 void main()
 {
-    int i, j, n, p[10], b[10], a[10], temp, tat[10], wt[10], ft[10], st[10], gt[10];
+    int i, j, n, p[10], b[10], a[10], temp, tat[10], wt[10], ft[10], st[10], gt[10], count;
     float avgtat=0, avgwt=0;
+    
     printf("\n\n\t--- CPU SCHEDULING SJF ---");
     printf("\n\nEnter the number of process: ");
     scanf("%d", &n);
@@ -219,6 +219,29 @@ void main()
         }
     }
 
+    count=0;
+    for(i=0;i<n-1;i++)
+    {
+        for(j=i+1;j<n;j++)
+        {
+            if(a[i]<=count && b[i]>b[j] && a[j]<=count)
+            {
+                    temp=a[j];
+                    a[j]=a[i];
+                    a[i]=temp;
+
+                    temp=b[j];
+                    b[j]=b[i];
+                    b[i]=temp;
+
+                    temp=p[j];
+                    p[j]=p[i];
+                    p[i]=temp;
+            }
+        }
+        count=count+b[i];
+    }
+
     for(i=0;i<n;i++)
     {
         st[i]=a[i];
@@ -245,6 +268,7 @@ void main()
     avgtat=avgtat/n;
     avgwt=avgwt/n;
 
+    
     printf("\n\n\tProcess id|\tArrival Time|\tBurst Time|\tWaiting Time|\tTurnaround Time|\tGarnt chart|\n");
     for(i=0;i<n;i++)
     {
@@ -253,7 +277,6 @@ void main()
     printf("\n\nAverage Turnaround Time: %f", avgtat);
     printf("\n\nAverage Waiting Time: %f\n\n", avgwt);
 }
-
 
 //another code for sjf scheduling
 
