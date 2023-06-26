@@ -1,3 +1,11 @@
+# S6 Network lab contents
+1. __Implement client-server communication using socket programming and TCP as
+transport layer protocol using c__
+1. __Implement client-server communication using socket programming and UDP as transport layer protocol using c__
+1. __Simulation of Stop and Wait Protocol-Simulation__
+1. __Implementation of file transfer protocol__
+1. __Implement parent child communication using  fork system call__
+
 # S4 OS and S5 SS CONTENTS
 1. __Absolute Loader__
 1. __Pass 1__
