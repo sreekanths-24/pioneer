@@ -46,6 +46,7 @@ int main()
     printf("\nEnter the transition table below\n");
     for(i=0;i<=no_states;i++)
     {
+        //Write states to Trans Table
         if(i!=0)
         {
             sprintf(trans_table[i][0], "%d", i);
@@ -55,11 +56,13 @@ int main()
 
         for(j=1;j<=no_symbols;j++)
         {
+            //Write symbol headings to Trans Table
             if(i==0)
             {
                 trans_table[0][j][0]=(char)96+j;
                 continue;
             }
+            //Take inputs to Trans Table
             printf("input %c: ", (char)96+j);
             scanf("%s", trans_table[i][j]);
         }
@@ -77,6 +80,7 @@ int main()
         scanf("%d", &final_states[i]);
     }
 
+    //Print input table
     printf("\n-- INPUT --\n\n");
     for(i=0;i<=no_states;i++)
     {
@@ -87,8 +91,10 @@ int main()
         }
     }
 
+    //initialize q0(initial state's) outputs into dfa table. Also write symbols as headings
     for(i=0;i<=no_states;i++)
     {
+        //Write symbols as headings in DFA Table (a b c...)
         if(i==0)
         {
             for(j=1;j<=no_symbols;j++)
@@ -97,6 +103,7 @@ int main()
             }
         }
 
+        //Move initial state and its outputs to DFA Table
         if(i==initial)
         {
             for(j=0;j<=no_symbols;j++)
@@ -106,18 +113,21 @@ int main()
         }
     }
 
+    //Calculate DFA outputs using DFA table
     i=1;
     z=2;
     while(i!=z)
     {
         for(j=1;j<=no_symbols;j++)
         {
+            //If DFA table entry is empty, then skip it
             if(strcmp(dfa_table[i][j], "-") == 0)
             {
                 continue;
             }
 
             found=0;
+            //loop through states and see if they already exist in DFA Table
             for(k=1;k<z;k++)
             {
                 tempz[0]='\0';
@@ -133,16 +143,20 @@ int main()
 
             if(found!=1)
             {
+                //Copy non-existent state from table to list of states
                 strcpy(dfa_table[z][0], dfa_table[i][j]);
+                //go through each string characters stored
                 for(k=0;k<=strlen(dfa_table[z][0]);k++)
                 {
                     tempz[0]=dfa_table[z][0][k];
                     sscanf(tempz, "%d", &temp);
 
+                    //select state numbers upto ','
                     if(dfa_table[z][0][k]!=',' && dfa_table[z][0][k]!='\0') //if current is not',' and not blank space
                     {
                         selected_state=(selected_state*10)+temp;
                     }
+                    //Once selected upto ',' Find corresponding output
                     else
                     {
                         for(l=1;l<=no_states;l++)
@@ -160,16 +174,19 @@ int main()
                 for(k=1;k<=no_symbols;k++)
                 {
                     str_len=(strlen(dfa_table[z][k])-1);
+                    //If filled DFA Table row has empty space, fill them with '-' signs
                     if(dfa_table[z][k][0]=='\0')
                     {
                         dfa_table[z][k][0]='-';
                     }
 
+                    //Remove extra commas from DFA Table
                     if(dfa_table[z][k][str_len]==',')
                     {
                         dfa_table[z][k][str_len]='\0';
                     }
 
+                    //remove repetitions of symbols from DFA Table
                     for(l=0; l<strlen(dfa_table[z][k]); l++)
                     {
                         if(dfa_table[z][k][l] == ',')
@@ -196,18 +213,20 @@ int main()
     printf("\n\n\n");
     printf("\n-- OUTPUT --\n\n");
 
+    //Print output table
     for(i=0;i<=z;i++)
     {
         printf("\n");
         for(j=0;j<=no_symbols;j++)
         {
             temp=0;
+            //Check for final state to print *
             if(j==0)
             {
                 for(k=0;k<no_final;k++)
                 {
                     tempz[0]='\0';
-                    sprintf(tempz, "%d", final_states[k]); 
+                    sprintf(tempz, "%d", final_states[k]); //convert int to string
                     if(strstr(dfa_table[i][j] ,tempz))
                     {
                         printf("*%s\t\t", dfa_table[i][j]);

@@ -1,7 +1,7 @@
-#include<stdio.h> 
+#include<stdio.h> // for input output
 #include<math.h>
-#include<string.h>
-#include<ctype.h>
+#include<string.h> // for string functions
+#include<ctype.h> // for islower, isupper etc
 #include<stdlib.h> 
 
 int n, m = 0, p, i = 0, j = 0, loopflag, first_epsilon=0, follow_epsilon=0;
@@ -60,6 +60,7 @@ void first(char c) {
         {
             if (a[k][2] == '$')
                 follow(a[k][0]);
+            //TERMINAL - 1.alphabets, 2.direct epsilon, 3.Recursive epsilon, 4. symbols
             else if (islower(a[k][2]))
                 f[m++] = a[k][2];
             else if (a[k][2]=='#' && loopflag==0)
@@ -68,6 +69,7 @@ void first(char c) {
                 first_epsilon=1;
             else if (a[k][2]=='+' || a[k][2]=='-' || a[k][2]=='*' || a[k][2]=='/' || a[k][2]=='(' || a[k][2]==')')
                 f[m++] = a[k][2];
+            //NON-TERMINAL - look for epsilon
             else
             {
                 loopflag=1;
@@ -87,23 +89,28 @@ void follow(char c) {
     int l, k, z;
     if (a[0][0] == c)
         f[m++] = '$';
+    //Go to each line, row by row
     for (i = 0; i < n; i++)
     {
+        //Go through the selected line until 'c' is found
         for (j = 2; j < strlen(a[i]); j++)
         {
             z=j;
             if (a[i][z] == c)
             {
 
+                //If next char is newline, find 'follow' of left side Non-Terminal
                 if(a[i][z+1]=='\0' && c!=a[i][0])
                 {
                     follow(a[i][0]);
                 }
 
+                //If next char is not a newline, then find its 'first'
                 while (a[i][z+1] != '\0')
                 {
                     loopflag=0;
                     first(a[i][z+1]);
+                    //Remove epsilon (#) if the 'first' contains it. If this is the case then we have to find 'first' of next char too. This while loop will perform it.
                     follow_epsilon=0;
                     for(l=0;l<m;l++)
                     {
@@ -123,6 +130,7 @@ void follow(char c) {
                         break;
                 }
 
+                //If next char is newline, and previous char's 'first' has epsilon
                 if (a[i][z+1] == '\0' && follow_epsilon==1)
                 {
                     follow(a[i][0]);
