@@ -1,6 +1,5 @@
 %{
 #include <stdio.h>
-#include <windows.h>
 int yylex();
 void yyerror(char *);
 %}
