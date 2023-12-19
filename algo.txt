@@ -1,0 +1,314 @@
+LEXICAL ANALYZER USING C
+------------------------
+1.Start Program
+2.Declare Variables and File Pointers:necessary variables, FILE *fp, ch, buffer[15], other required variables
+3.Open file "program.txt" in read mode ("r")
+4.If file opening is unsuccessful, print an error message and exit program
+5.Print content of input program
+6.Loop through program:
+	6.1.Identify keywords using isKeyword function
+	6.2.Display each keyword found in program
+7.Loop through program:
+	7.1.Identify operators
+	7.2.Display each operator found in program
+8.Loop through program:
+	8.1.Identify constants (numeric or string)
+	8.2.Print each constant found in program
+9.Loop through program:
+	9.1.Identify identifiers
+	9.2.Print each identifier found in program
+10.Close file "program.txt"
+11.End of Program
+
+
+
+
+CALCULATOR USING LEX
+--------------------
+1.Start program
+2.Declare global variables (op, i, a, b), Define digi() function
+3.Define regular expressions for digits, decimals, arithmetic operations, and line breaks
+4.Read tokens until end of input:
+	4.1.For each digit token, call digi() to handle numeric values
+	4.2.For arithmetic operation tokens, set op accordingly
+	4.3.When line break is encountered, print result and exit
+5.digi() Function:
+	5.1.If op is 0, assign value of current numeric token to a
+	5.2.If op is non-zero, assign value of current numeric token to b
+	5.3.Perform corresponding arithmetic operation based on current op
+	5.4.Handle division by zero and print an error message if necessary
+6.Main Function:
+	6.1.Print prompt for user to enter number with desired operation
+	6.2.Invoke lexer (yylex()) to tokenize and process input
+7.yywrap() Function:
+	7.1.Indicate end of input by returning 1
+8.End of Program
+
+
+
+
+COUNTING VOWELS AND CONSONANTS
+------------------------------
+1.Start program
+2.Declare global variables (v for vowels, c for consonants)
+3.Define token recognition rules using regular expressions:
+	3.1.For each vowel, increment v
+	3.2.For each alphabetical character, increment c
+	3.3.For newline character, print count of vowels and consonants and exit program
+	3.4.For any other character, ignore it
+4.Main Function:
+	4.1.Print prompt for user to enter input
+	4.2.Invoke lexer (yylex()) to tokenize and process input
+5.yywrap() Function:
+	5.1.Indicate end of input by returning 1
+6.End of Program
+
+
+
+
+COUNTING WORDS, SPACES, LINES, ETC.
+-----------------------------------
+1.Start program
+2.Declare global variables (sc for spaces, wc for words, lc for lines, cc for characters)
+3.Define token recognition rules using regular expressions:
+	3.1.For each newline character, increment lc and add length to cc
+	3.2.For each space or tab character, sc and add length to cc
+	3.3.For any sequence of characters other than space, tab, or newline, increment wc and add length to cc
+4.Main Function:
+	4.1.Print prompt for user to enter input
+	4.2.Invoke lexer (yylex()) to tokenize and process input
+5.yywrap() Function:
+	5.1.Indicate end of input by returning 1
+6.After processing input, print counts of lines, spaces, words, and characters
+7.End of Program
+
+
+
+
+INTERMEDIATE CODE GENERATOR
+---------------------------
+1.Start program
+2.Define constants global variables for expression, left operand, right operand, array to store operator's positions and types
+3.Main Function:
+	3.1.Read expression from user
+	3.2.Call findopr() to identify operators
+	3.3.Call explore() to generate intermediate code
+4.findopr() Function:
+	4.1.Iterate through expression to find positions and types of operators (=, :, /, *, +, -)
+	4.2.Store positions and types in k array
+5.explore() Function:
+	5.1.Initialize i to 1 and iterate through k array
+	5.2.Call fleft() and fright() functions to extract left and right operands
+	5.3.Replace operator with temporary character and print intermediate code
+	5.4.Decrement temporary character
+	5.5.If no operator is found, perform final assignment
+6.fleft() Function:
+	6.1.Extract left operand by moving backward from given position until an operator is found
+	6.2.Store left operand in left array
+7.fright() Function:
+	7.1.Extract right operand by moving forward from given position until an operator is found
+	7.2.Store right operand in right array
+8.Print intermediate code for each operator
+9.End of Program
+
+
+
+
+NFA TO DFA
+----------
+1.Start program
+2.Define constants and variables, Declare arrays to store transition table of NFA (trans_table) and resulting DFA (dfa_table)
+3.Read total number of states, input symbols, and transition table of NFA, initial state and number of final states from user
+4.Initialize DFA table by copying transition information from NFA table for initial state
+5.Conversion Process:
+	5.1.Use subset construction method to generate DFA transition table
+	5.2.Identify states in DFA by exploring transitions from NFA states for each input symbol
+	5.3.If new state is found, add it to DFA table
+6.Display final DFA transition table
+7.Print resulting states of DFA and mark final states with an asterisk
+8.End of program
+
+
+
+
+CONSTANT PROPOGATION
+--------------------
+1.Start program
+2.Define structure for expressions
+3.Declare an array and an integer (n) for expressions
+4.Input Function (input()):
+	4.1.Read maximum expressions (n) from user
+	4.2.Read expressions into array
+5.Constant Folding Function (constant()):
+	5.1.Iterate expressions
+	5.2.If both operands are constants or it's an assignment:
+		5.2.1.Evaluate and store result
+		5.2.2.Mark as optimized (flag = 1)
+		5.2.3.Update subsequent expressions
+6.Output Function (output()):
+	6.1.Display optimized code (flag = 0)
+7.Change Function (change()):
+	7.1.Update subsequent expressions
+8.Main Function (main()):
+	8.1.Call input(), constant(), and output()
+9.End of program
+
+
+
+
+YACC TO RECOGNIZE ARITHMETIC EXPRESSION
+---------------------------------------
+1.Start Program
+2.YACC Definitions:
+	2.1.Include necessary header files and declare yylex() and yyerror() functions
+	2.2.Define tokens for numbers (NUMBER) and variables (VARIABLE)
+	2.3.Specify precedence and associativity of operators
+3.YACC Rules:
+	3.1.Define YACC rules for statements (S) and expressions (E)
+	3.2.For valid statement, print message indicating valid arithmetic expression
+4.LEX Definitions:
+	4.1.Include header files and YACC-generated header file (y.tab.h)
+5.LEX Rules:
+	5.1.Recognize variable names and return VARIABLE token
+	5.2.Recognize numeric literals and return NUMBER token
+	5.3.Ignore tabs
+	5.4.Recognize newline characters
+	5.5.Return other characters individually
+6.LEX Wrap-up Function:
+	6.1.Implement yywrap() function to indicate end of input
+7.Main Function:
+	7.1.Print prompt to enter an arithmetic expression
+	7.2.Call yyparse() to initiate parsing
+	7.3.Return 0 to indicate successful execution
+8.Error Handling (yyerror):
+	8.1.If an error occurs during parsing, print an error message indicating an invalid expression
+9.End Program
+
+
+
+
+YACC TO FIND PALINDROME OR NOT
+------------------------------
+1.Start Program
+2.Yacc Definitions:
+	2.1.Include necessary header files and declare yylex() and yyerror() functions
+	2.2.Define union for tokens to hold character string
+	2.3.Declare token type STR and non-terminal type E
+3.Yacc Rules:
+	3.1.Define Yacc rules for statements (S) and expressions (E)
+	3.2.For valid statement, check if given string is palindrome
+	3.3.If it's palindrome, print "Palindrome"; otherwise, print "Not palindrome"
+4.Lex Definitions:
+	4.1.Include header files and Yacc-generated header file (y.tab.h)
+	4.2.Declare function for error handling (yyerror)
+5.Lex Rules:
+	5.1.Recognize strings composed of alphabets (both uppercase and lowercase) and return token STR
+	5.2.Recognize basic arithmetic operators (+, -, *, /) and parentheses and return them individually
+	5.3.Ignore whitespace characters
+6.Lex Wrap-up Function:
+	6.1.Implement yywrap() function to indicate end of input
+7.Main Function:
+	7.1.Call yyparse() to initiate parsing
+8.Error Handling (yyerror):
+	8.1.Print an error message if an invalid character is encountered
+9.End Program
+
+
+
+
+BACKEND OF COMPILER
+-------------------
+1.Start Program
+2.Main Function:
+	2.1.Declares variables:
+		2.1.1.icode[10][30]: 2D array to store intermediate code instructions
+		2.1.2.str[20]: Temporary string to store each input instruction
+		2.1.3.destReg, op, operand1, operand2: Variables to store components of an intermediate code instruction
+	2.2.Takes user input for intermediate code instructions until "exit" is entered or maximum of 10 instructions
+3.Target Code Generation:
+	3.1.Iterates through entered intermediate code instructions
+	3.2.Uses sscanf to parse each instruction into its components (destReg, operand1, op, operand2)
+	3.3.Generates target code (assembly-like instructions) based on parsed intermediate code:
+		3.3.1.MOV R0, operand1
+		3.3.2.MOV R1, operand2
+		3.3.3.Depending on operator (op), generates ADD, SUB, MUL, or DIV instructions between R0 and R1
+		3.3.4.MOV destReg, R0: Stores result in destination register
+4.End of Program
+
+
+
+
+FIRST AND FOLLOW
+----------------
+1.Start program
+2.Find FIRST:
+	2.1.If α is terminal, add it to FIRST set
+	2.2.If α is non-terminal and α->ε, add ε to FIRST set
+	2.3.If α is non-terminal and α->r1 r2...rm, if FIRST(r1) has ε, then add FIRST(r2) to FIRST(α) and so on
+3.Find FOLLOW
+	3.1.If α is start symbol, then add $ to FOLLOW(α)
+	3.2.If α is non-terminal and α->AB, then FIRST(B) is in FOLLOW(A)
+	3.3.If is non-terminal and A->αBß or A->αB, then FOLLOW(A) is in FOLLOW(B)
+4.Print FIND and FOLLOW
+5.End of program
+
+
+
+
+FIRST AND FOLLOW (Alternative)
+-----------------------------
+1.Start program
+2.printSet():
+	2.1.Prints set type (FIRST or FOLLOW) for variable
+3.findFirst():
+	3.1.Recursively calculates FIRST set for variable
+	3.2.Handles cases where production contains epsilon
+	3.3.Calls follow() function when epsilon is encountered
+4.first():
+	4.1.Calls findFirst() to find and print FIRST set for variable
+5.findFollow():
+	5.1.Recursively calculates FOLLOW set for variable
+	5.2.Handles epsilon in productions
+	5.3.Calls findFirst() to compute FIRST sets
+6.follow():
+	6.1.Calls findFollow(c) to find and print FOLLOW set for variable
+7.main():
+	Reads number of productions and productions themselves
+	Allows user to input variables for which FIRST and FOLLOW sets need to be found
+	Calls first() and follow() functions accordingly
+	Continues process based on user input
+8.End of program
+
+
+
+
+SHIFT REDUCE PARSER
+-------------------
+1.Start program
+2.Initialize variables
+3.Read number of production rules from user
+4.Read each production rule from user, splitting into left and right parts, and store them in rules array
+5.Read input string from user
+6.Initialize i to 0
+7.while true:
+	7.1.If i<length of input:
+		7.1.1.Read character ch from input
+		7.1.2.Increment i
+		7.1.3.Append ch to stack
+		7.1.4.Display current stack and remaining input
+		7.1.5.Display "Shift ch"
+	7.2.For each production rule in rules:
+		7.2.1.Find right-hand side of rule in current stack
+		7.2.2.If found (substring is not NULL):
+			7.2.2.1.Calculate stack_length, substring_length, and stack_top
+			7.2.2.2.Replace right-hand side with left-hand side in stack
+			7.2.2.3.Display current stack and remaining input
+			7.2.2.4.Display "Reduce left->right"
+			7.2.2.5.Set j to -1 to restart rule checking
+	7.3.If stack equals left-hand side of first production rule and i equals length of input:
+		7.3.1.Display "Accepted"
+		7.3.2.Break from loop
+	7.4.If i equals length of input:
+		7.4.1.Display "Not Accepted"
+		7.4.2.Break from loop
+8.End of program
